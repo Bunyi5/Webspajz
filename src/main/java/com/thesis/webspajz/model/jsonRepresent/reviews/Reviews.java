@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class Reviews {
 
-    private long totalReviewCount;
-    private double averageRating;
+    private long totalReviewCount = 0;
+    private double averageRating = 0.0;
 }

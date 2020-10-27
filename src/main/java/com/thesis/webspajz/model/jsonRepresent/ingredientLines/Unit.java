@@ -1,9 +1,15 @@
 package com.thesis.webspajz.model.jsonRepresent.ingredientLines;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class Unit {
 
-    private String abbreviation;
+    private String abbreviation = "";
+
+    public void setAbbreviation(String abbreviation) {
+        if (abbreviation != null) {
+            this.abbreviation = abbreviation;
+        }
+    }
 }

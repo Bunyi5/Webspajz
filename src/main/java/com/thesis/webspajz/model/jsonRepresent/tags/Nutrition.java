@@ -1,11 +1,17 @@
 package com.thesis.webspajz.model.jsonRepresent.tags;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class Nutrition {
 
     @JsonProperty("display-name")
-    private String nutritionData;
+    private String nutritionData = "";
+
+    public void setNutritionData(String nutritionData) {
+        if (nutritionData != null) {
+            this.nutritionData = nutritionData;
+        }
+    }
 }

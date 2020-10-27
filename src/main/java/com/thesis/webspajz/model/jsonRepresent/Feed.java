@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class Feed {
 
-    private List<Recipe> feed;
+    private List<RecipeJson> feed;
 }

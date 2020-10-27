@@ -1,11 +1,17 @@
 package com.thesis.webspajz.model.jsonRepresent.tags;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class Technique {
 
     @JsonProperty("display-name")
-    private String techniqueType;
+    private String techniqueType = "";
+
+    public void setTechniqueType(String techniqueType) {
+        if (techniqueType != null) {
+            this.techniqueType = techniqueType;
+        }
+    }
 }

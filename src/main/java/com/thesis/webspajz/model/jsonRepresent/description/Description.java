@@ -1,11 +1,17 @@
 package com.thesis.webspajz.model.jsonRepresent.description;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class Description {
 
     @JsonProperty("text")
-    private String descriptionText;
+    private String descriptionText = "";
+
+    public void setDescriptionText(String descriptionText) {
+        if (descriptionText != null) {
+            this.descriptionText = descriptionText;
+        }
+    }
 }
