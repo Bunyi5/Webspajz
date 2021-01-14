@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.thesis.webspajz.dto.PresentedRecipeDTO;
 import com.thesis.webspajz.model.Ingredient;
 import com.thesis.webspajz.model.Recipe;
 import com.thesis.webspajz.model.jsonRepresent.Feed;
@@ -12,6 +13,8 @@ import com.thesis.webspajz.model.jsonRepresent.RecipeJson;
 import com.thesis.webspajz.model.jsonRepresent.ingredientLines.IngredientLines;
 import com.thesis.webspajz.model.jsonRepresent.tags.Nutrition;
 import com.thesis.webspajz.model.jsonRepresent.tags.Technique;
+import com.thesis.webspajz.repository.RecipeRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +27,14 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class RecipeService {
+
+    private final RecipeRepository recipeRepository;
+
+    public List<PresentedRecipeDTO> getAllPresentedRecipe() {
+        return recipeRepository.findAllPresentedRecipe();
+    }
 
     public List<Recipe> getRecipesFromFile() {
         String data = "";
