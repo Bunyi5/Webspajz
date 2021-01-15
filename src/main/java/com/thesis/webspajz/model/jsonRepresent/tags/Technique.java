@@ -7,10 +7,10 @@ import lombok.Getter;
 public class Technique {
 
     @JsonProperty("display-name")
-    private String techniqueType = "";
+    private String techniqueType = null;
 
     public void setTechniqueType(String techniqueType) {
-        if (techniqueType != null) {
+        if (techniqueType != null && !techniqueType.equals("")) {
             this.techniqueType = techniqueType;
         }
     }

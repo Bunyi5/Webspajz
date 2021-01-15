@@ -5,17 +5,17 @@ import lombok.Getter;
 @Getter
 public class Images {
 
-    private String hostedLargeUrl = "";
-    private String resizableImageUrl = "";
+    private String hostedLargeUrl = null;
+    private String resizableImageUrl = null;
 
     public void setHostedLargeUrl(String hostedLargeUrl) {
-        if (hostedLargeUrl != null) {
+        if (hostedLargeUrl != null && !hostedLargeUrl.equals("")) {
             this.hostedLargeUrl = hostedLargeUrl;
         }
     }
 
     public void setResizableImageUrl(String resizableImageUrl) {
-        if (resizableImageUrl != null) {
+        if (resizableImageUrl != null && !resizableImageUrl.equals("")) {
             this.resizableImageUrl = resizableImageUrl;
         }
     }

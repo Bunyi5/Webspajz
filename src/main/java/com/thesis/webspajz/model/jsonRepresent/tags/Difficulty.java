@@ -7,10 +7,10 @@ import lombok.Getter;
 public class Difficulty {
 
     @JsonProperty("display-name")
-    private String difficultyLevel = "";
+    private String difficultyLevel = null;
 
     public void setDifficultyLevel(String difficultyLevel) {
-        if (difficultyLevel != null) {
+        if (difficultyLevel != null && !difficultyLevel.equals("")) {
             this.difficultyLevel = difficultyLevel;
         }
     }

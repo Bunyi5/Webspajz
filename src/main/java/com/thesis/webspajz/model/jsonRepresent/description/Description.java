@@ -7,10 +7,10 @@ import lombok.Getter;
 public class Description {
 
     @JsonProperty("text")
-    private String descriptionText = "";
+    private String descriptionText = null;
 
     public void setDescriptionText(String descriptionText) {
-        if (descriptionText != null) {
+        if (descriptionText != null && !descriptionText.equals("")) {
             this.descriptionText = descriptionText;
         }
     }

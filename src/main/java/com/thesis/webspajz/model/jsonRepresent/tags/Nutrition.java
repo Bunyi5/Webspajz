@@ -7,10 +7,10 @@ import lombok.Getter;
 public class Nutrition {
 
     @JsonProperty("display-name")
-    private String nutritionData = "";
+    private String nutritionData = null;
 
     public void setNutritionData(String nutritionData) {
-        if (nutritionData != null) {
+        if (nutritionData != null && !nutritionData.equals("")) {
             this.nutritionData = nutritionData;
         }
     }

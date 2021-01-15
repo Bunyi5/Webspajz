@@ -6,7 +6,7 @@ import lombok.Getter;
 public class IngredientLines {
 
     private Amount amount = new Amount();
-    private String ingredient = "";
+    private String ingredient = null;
 
     public void setAmount(Amount amount) {
         if (amount != null) {
@@ -15,7 +15,7 @@ public class IngredientLines {
     }
 
     public void setIngredient(String ingredient) {
-        if (ingredient != null) {
+        if (ingredient != null && !ingredient.equals("")) {
             this.ingredient = ingredient;
         }
     }

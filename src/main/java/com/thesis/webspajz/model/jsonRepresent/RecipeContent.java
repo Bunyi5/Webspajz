@@ -16,7 +16,7 @@ public class RecipeContent {
 
     private Description description = new Description();
     private Tags tags = new Tags();
-    private List<String> preparationSteps = new ArrayList<>(List.of(""));
+    private List<String> preparationSteps = new ArrayList<>();
     private Details details = new Details();
     @JsonProperty("ingredientLines")
     private List<IngredientLines> ingredientLinesList = new ArrayList<>(List.of(new IngredientLines()));
