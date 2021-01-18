@@ -1,5 +1,6 @@
 package com.thesis.webspajz.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ public class Ingredient {
     private double quantity;
     private String unit;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Recipe recipe;
 }

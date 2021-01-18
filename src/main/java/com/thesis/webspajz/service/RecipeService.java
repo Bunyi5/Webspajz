@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,10 @@ public class RecipeService {
 
     public List<PresentedRecipeDTO> getAllPresentedRecipe() {
         return recipeRepository.findAllPresentedRecipe();
+    }
+
+    public Optional<Recipe> getRecipeById(Long id) {
+        return recipeRepository.findById(id);
     }
 
     public List<Recipe> getRecipesFromFile() {
