@@ -28,10 +28,16 @@ CREATE TABLE recipe_preparation_steps (
     preparation_steps VARCHAR(1000)
 );
 
-CREATE TABLE ingredient (
+CREATE TABLE recipe_ingredient (
     id INT PRIMARY KEY,
     recipe_id INT,
-    ingredient VARCHAR(250),
+    ingredient_id INT,
     quantity DOUBLE,
+    unit VARCHAR(250)
+);
+
+CREATE TABLE ingredient (
+    id INT PRIMARY KEY,
+    name VARCHAR(250),
     unit VARCHAR(250)
 );

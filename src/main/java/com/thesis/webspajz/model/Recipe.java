@@ -37,10 +37,10 @@ public class Recipe {
     private List<String> preparationSteps;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-    private List<Ingredient> ingredientList = new ArrayList<>();
+    private List<RecipeIngredient> recipeIngredientList = new ArrayList<>();
 
-    public void addToIngredientList(Ingredient ingredient) {
-        ingredient.setRecipe(this);
-        this.ingredientList.add(ingredient);
+    public void addToIngredientList(RecipeIngredient recipeIngredient) {
+        recipeIngredient.setRecipe(this);
+        this.recipeIngredientList.add(recipeIngredient);
     }
 }

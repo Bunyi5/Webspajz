@@ -7,12 +7,14 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.thesis.webspajz.dto.PresentedRecipeDTO;
 import com.thesis.webspajz.model.Ingredient;
 import com.thesis.webspajz.model.Recipe;
+import com.thesis.webspajz.model.RecipeIngredient;
 import com.thesis.webspajz.model.jsonRepresent.Feed;
 import com.thesis.webspajz.model.jsonRepresent.RecipeContent;
 import com.thesis.webspajz.model.jsonRepresent.RecipeJson;
 import com.thesis.webspajz.model.jsonRepresent.ingredientLines.IngredientLines;
 import com.thesis.webspajz.model.jsonRepresent.tags.Nutrition;
 import com.thesis.webspajz.model.jsonRepresent.tags.Technique;
+import com.thesis.webspajz.repository.IngredientRepository;
 import com.thesis.webspajz.repository.RecipeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
+    private final IngredientRepository ingredientRepository;
 
     public List<PresentedRecipeDTO> getAllPresentedRecipe() {
         return recipeRepository.findAllPresentedRecipe();
@@ -125,13 +128,33 @@ public class RecipeService {
         List<IngredientLines> ingredientLinesList = recipeContent.getIngredientLinesList();
 
         for (IngredientLines ingredientLines : ingredientLinesList) {
-            Ingredient ingredient = new Ingredient();
+            RecipeIngredient recipeIngredient = new RecipeIngredient();
 
-            ingredient.setIngredient(ingredientLines.getIngredient());
-            ingredient.setQuantity(ingredientLines.getAmount().getMetric().getQuantity());
-            ingredient.setUnit(ingredientLines.getAmount().getMetric().getUnit().getAbbreviation());
+            recipeIngredient.setIngredient(saveIngredient(ingredientLines));
+            recipeIngredient.setQuantity(ingredientLines.getAmount().getMetric().getQuantity());
+            recipeIngredient.setUnit(ingredientLines.getAmount().getMetric().getUnit().getAbbreviation());
 
-            recipe.addToIngredientList(ingredient);
+            recipe.addToIngredientList(recipeIngredient);
         }
+    }
+
+    public Ingredient saveIngredient(IngredientLines ingredientLines) {
+        Ingredient ingredient = new Ingredient();
+
+        Optional<Ingredient> maybeIngredient = ingredientRepository.findByName(ingredientLines.getIngredient());
+
+        if (maybeIngredient.isPresent()) {
+            if (maybeIngredient.get().getUnit() == null && ingredientLines.getAmount().getMetric().getUnit().getAbbreviation() != null) {
+                maybeIngredient.get().setUnit(ingredientLines.getAmount().getMetric().getUnit().getAbbreviation());
+                ingredientRepository.save(maybeIngredient.get());
+            }
+            ingredient = maybeIngredient.get();
+        } else {
+            ingredient.setName(ingredientLines.getIngredient());
+            ingredient.setUnit(ingredientLines.getAmount().getMetric().getUnit().getAbbreviation());
+            ingredientRepository.save(ingredient);
+        }
+
+        return ingredient;
     }
 }
