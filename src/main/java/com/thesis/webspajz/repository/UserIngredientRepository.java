@@ -21,6 +21,6 @@ public interface UserIngredientRepository extends JpaRepository<UserIngredient, 
     @Query("SELECT new com.thesis.webspajz.dto.UserIngredientResponseDTO(" +
             "i.id, i.name, ui.quantity, i.unit) " +
             "FROM Ingredient i LEFT JOIN UserIngredient ui ON ui.ingredientId = i.id " +
-            "WHERE ui.userId = :userId OR ui.userId IS NULL ORDER BY i.name")
+            "AND ui.userId = :userId ORDER BY i.name")
     List<UserIngredientResponseDTO> findAllUserIngredientDTOWithUserId(@Param("userId") Long userId);
 }
