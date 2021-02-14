@@ -29,9 +29,4 @@ public class RecipeController {
         return recipeService.getRecipeById(id)
                 .map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(404).build());
     }
-
-    @GetMapping("/tryAuth")
-    public String firstPage() {
-        return "success";
-    }
 }
