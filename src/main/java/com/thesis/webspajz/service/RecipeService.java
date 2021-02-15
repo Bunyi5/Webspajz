@@ -35,9 +35,10 @@ public class RecipeService {
 
     private final RecipeRepository recipeRepository;
     private final IngredientRepository ingredientRepository;
+    private final CompletenessCalculator completenessCalculator;
 
     public List<PresentedRecipeDTO> getAllPresentedRecipe() {
-        return recipeRepository.findAllPresentedRecipe();
+        return completenessCalculator.fillCalculationInPresentedRecipeDTO(recipeRepository.findAllPresentedRecipe());
     }
 
     public Optional<Recipe> getRecipeById(Long id) {

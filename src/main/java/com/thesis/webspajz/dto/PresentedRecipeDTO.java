@@ -1,13 +1,13 @@
 package com.thesis.webspajz.dto;
 
-import lombok.AllArgsConstructor;
+import com.thesis.webspajz.model.Completeness;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class PresentedRecipeDTO {
 
-    private Long id;
-    private String name;
-    private String iconImageUrl;
+    private final Long id;
+    private final String name;
+    private final String iconImageUrl;
+    private Completeness completeness;
 }
