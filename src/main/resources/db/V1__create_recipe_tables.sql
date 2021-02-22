@@ -9,7 +9,7 @@ CREATE TABLE recipe (
     icon_image_url VARCHAR(250),
     resizable_image_url VARCHAR(250),
     total_review_count DECIMAL,
-    average_rating DOUBLE,
+    average_rating DOUBLE PRECISION,
     difficulty_level VARCHAR(250)
 );
 
@@ -32,7 +32,7 @@ CREATE TABLE recipe_ingredient (
     id INT PRIMARY KEY,
     recipe_id INT,
     ingredient_id INT,
-    quantity DOUBLE,
+    quantity DOUBLE PRECISION,
     unit VARCHAR(250)
 );
 

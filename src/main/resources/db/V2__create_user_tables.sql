@@ -1,4 +1,4 @@
-CREATE TABLE user (
+CREATE TABLE "user" (
     id INT PRIMARY KEY,
     username VARCHAR(20) UNIQUE NOT NULL,
     password VARCHAR(60) NOT NULL,
@@ -10,6 +10,6 @@ CREATE TABLE user (
 CREATE TABLE user_ingredient (
     user_id INT,
     ingredient_id INT,
-    quantity DOUBLE,
+    quantity DOUBLE PRECISION,
     PRIMARY KEY (user_id, ingredient_id)
 );

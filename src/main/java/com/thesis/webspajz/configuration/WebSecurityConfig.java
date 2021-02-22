@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.cors()
                 .and()
                 .csrf().disable()
-                .authorizeRequests().antMatchers("/authenticate", "/saveNewUser","/h2-console/**").permitAll() // TODO: DELETE LATER ONLY FOR H2
+                .authorizeRequests().antMatchers("/authenticate", "/saveNewUser").permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
@@ -67,6 +67,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-        httpSecurity.headers().frameOptions().disable(); // TODO: DELETE LATER ONLY FOR H2
     }
 }

@@ -15,6 +15,7 @@ import com.thesis.webspajz.model.jsonRepresent.ingredientLines.IngredientLines;
 import com.thesis.webspajz.model.jsonRepresent.tags.Nutrition;
 import com.thesis.webspajz.model.jsonRepresent.tags.Technique;
 import com.thesis.webspajz.repository.IngredientRepository;
+import com.thesis.webspajz.repository.RecipeIngredientRepository;
 import com.thesis.webspajz.repository.RecipeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class RecipeService {
 
     private final RecipeRepository recipeRepository;
     private final IngredientRepository ingredientRepository;
+    private final RecipeIngredientRepository recipeIngredientRepository;
     private final CompletenessCalculator completenessCalculator;
 
     public List<PresentedRecipeDTO> getAllPresentedRecipe() {
@@ -82,6 +84,9 @@ public class RecipeService {
 
         for (RecipeJson recipeJson : recipeJsonList) {
             Recipe recipe = new Recipe();
+
+            Optional<Recipe> maybeRecipe = recipeRepository.findByYumId(recipeJson.getRecipeContent().getDetails().getRecipeId());
+            maybeRecipe.ifPresent(recipePresentInDB -> recipe.setId(recipePresentInDB.getId()));
 
             RecipeContent recipeContent = recipeJson.getRecipeContent();
 
@@ -131,7 +136,22 @@ public class RecipeService {
         for (IngredientLines ingredientLines : ingredientLinesList) {
             RecipeIngredient recipeIngredient = new RecipeIngredient();
 
-            recipeIngredient.setIngredient(saveIngredient(ingredientLines));
+            Optional<RecipeIngredient> maybeRecipeIngredient = Optional.empty();
+
+            Optional<Ingredient> maybeIngredient = ingredientRepository.findByName(ingredientLines.getIngredient());
+
+            if (maybeIngredient.isPresent()) {
+                maybeRecipeIngredient = recipeIngredientRepository.findByRecipeIdAndIngredientId(recipe.getId(), maybeIngredient.get().getId());
+
+                if (maybeRecipeIngredient.isPresent()) {
+                    recipeIngredient = maybeRecipeIngredient.get();
+                }
+            }
+
+            if (maybeRecipeIngredient.isEmpty()) {
+                recipeIngredient.setIngredient(saveIngredient(ingredientLines));
+            }
+
             recipeIngredient.setQuantity(ingredientLines.getAmount().getMetric().getQuantity());
             recipeIngredient.setUnit(ingredientLines.getAmount().getMetric().getUnit().getAbbreviation());
 

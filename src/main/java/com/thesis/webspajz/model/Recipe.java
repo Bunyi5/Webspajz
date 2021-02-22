@@ -40,7 +40,16 @@ public class Recipe {
     private List<RecipeIngredient> recipeIngredientList = new ArrayList<>();
 
     public void addToIngredientList(RecipeIngredient recipeIngredient) {
-        recipeIngredient.setRecipe(this);
-        this.recipeIngredientList.add(recipeIngredient);
+        boolean notFound = true;
+        for (RecipeIngredient ingredient : recipeIngredientList) {
+            if (ingredient.getIngredient().getId().equals(recipeIngredient.getIngredient().getId())) {
+                notFound = false;
+                break;
+            }
+        }
+        if (notFound) {
+            recipeIngredient.setRecipe(this);
+            this.recipeIngredientList.add(recipeIngredient);
+        }
     }
 }
