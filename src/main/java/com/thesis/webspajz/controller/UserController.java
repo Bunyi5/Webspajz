@@ -21,8 +21,7 @@ public class UserController {
 
     @GetMapping("/user")
     public ResponseEntity<UserDTO> getLoggedUser() {
-        UserDTO userDTO = new UserDTO(userAuthenticationService.getLoggedInUser());
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok(userAuthenticationService.getLoggedInUser());
     }
 
     @PostMapping("/saveNewUser")

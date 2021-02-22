@@ -50,24 +50,6 @@ public class RecipeService {
         return recipeRepository.findById(id);
     }
 
-//    public List<Recipe> getRecipesFromFile() {
-//        String data = "";
-//
-//        try {
-//            File myObj = new File("F:\\recipes.txt");
-//            Scanner myReader = new Scanner(myObj);
-//            while (myReader.hasNextLine()) {
-//                data = myReader.nextLine();
-//            }
-//            myReader.close();
-//        } catch (FileNotFoundException e) {
-//            System.out.println("An error occurred.");
-//            e.printStackTrace();
-//        }
-//
-//        return convertFeedToRecipe(processJsonStringToFeed(data));
-//    }
-
     public List<Recipe> getRecipesFromTheInternet() {
         Properties config = null;
         try {
@@ -91,7 +73,7 @@ public class RecipeService {
         return convertFeedToRecipe(processJsonStringToFeed(response.getBody()));
     }
 
-    public Feed processJsonStringToFeed(String jsonString) {
+    private Feed processJsonStringToFeed(String jsonString) {
         Feed feed = new Feed();
         ObjectMapper objectMapper = new JsonMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -104,7 +86,7 @@ public class RecipeService {
         return feed;
     }
 
-    public List<Recipe> convertFeedToRecipe(Feed feed) {
+    private List<Recipe> convertFeedToRecipe(Feed feed) {
         List<RecipeJson> recipeJsonList = feed.getFeed();
         List<Recipe> recipeList = new ArrayList<>();
 
@@ -129,7 +111,7 @@ public class RecipeService {
         return recipeList;
     }
 
-    public void setRecipeDetails(Recipe recipe, RecipeContent recipeContent) {
+    private void setRecipeDetails(Recipe recipe, RecipeContent recipeContent) {
         recipe.setYumId(recipeContent.getDetails().getRecipeId());
         recipe.setName(recipeContent.getDetails().getName());
         recipe.setNumberOfServings(recipeContent.getDetails().getNumberOfServings());
@@ -137,26 +119,26 @@ public class RecipeService {
         recipe.setResizableImageUrl(recipeContent.getDetails().getImages().get(0).getResizableImageUrl());
     }
 
-    public void setRecipeDescription(Recipe recipe, RecipeContent recipeContent) {
+    private void setRecipeDescription(Recipe recipe, RecipeContent recipeContent) {
         recipe.setDescription(recipeContent.getDescription().getDescriptionText());
     }
 
-    public void setRecipeReviews(Recipe recipe, RecipeContent recipeContent) {
+    private void setRecipeReviews(Recipe recipe, RecipeContent recipeContent) {
         recipe.setTotalReviewCount(recipeContent.getReviews().getTotalReviewCount());
         recipe.setAverageRating(recipeContent.getReviews().getAverageRating());
     }
 
-    public void setRecipeTags(Recipe recipe, RecipeContent recipeContent) {
+    private void setRecipeTags(Recipe recipe, RecipeContent recipeContent) {
         recipe.setDifficultyLevel(recipeContent.getTags().getDifficultyList().get(0).getDifficultyLevel());
         recipe.setNutritionList(recipeContent.getTags().getNutritionList().stream().map(Nutrition::getNutritionData).collect(Collectors.toList()));
         recipe.setTechniqueList(recipeContent.getTags().getTechniqueList().stream().map(Technique::getTechniqueType).collect(Collectors.toList()));
     }
 
-    public void setRecipePreparationSteps(Recipe recipe, RecipeContent recipeContent) {
+    private void setRecipePreparationSteps(Recipe recipe, RecipeContent recipeContent) {
         recipe.setPreparationSteps(recipeContent.getPreparationSteps());
     }
 
-    public void setRecipeIngredients(Recipe recipe, RecipeContent recipeContent) {
+    private void setRecipeIngredients(Recipe recipe, RecipeContent recipeContent) {
         List<IngredientLines> ingredientLinesList = recipeContent.getIngredientLinesList();
 
         for (IngredientLines ingredientLines : ingredientLinesList) {
@@ -185,7 +167,7 @@ public class RecipeService {
         }
     }
 
-    public Ingredient saveIngredient(IngredientLines ingredientLines) {
+    private Ingredient saveIngredient(IngredientLines ingredientLines) {
         Ingredient ingredient = new Ingredient();
 
         Optional<Ingredient> maybeIngredient = ingredientRepository.findByName(ingredientLines.getIngredient());
