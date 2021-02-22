@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.thesis.webspajz.dto.PresentedRecipeDTO;
 import com.thesis.webspajz.model.Ingredient;
 import com.thesis.webspajz.model.Recipe;
@@ -21,12 +24,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Scanner;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -38,6 +40,7 @@ public class RecipeService {
     private final IngredientRepository ingredientRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final CompletenessCalculator completenessCalculator;
+    private final PropertiesLoader propertiesLoader;
 
     public List<PresentedRecipeDTO> getAllPresentedRecipe() {
         return completenessCalculator.fillCalculationInPresentedRecipeDTO(recipeRepository.findAllPresentedRecipe());
@@ -47,22 +50,45 @@ public class RecipeService {
         return recipeRepository.findById(id);
     }
 
-    public List<Recipe> getRecipesFromFile() {
-        String data = "";
+//    public List<Recipe> getRecipesFromFile() {
+//        String data = "";
+//
+//        try {
+//            File myObj = new File("F:\\recipes.txt");
+//            Scanner myReader = new Scanner(myObj);
+//            while (myReader.hasNextLine()) {
+//                data = myReader.nextLine();
+//            }
+//            myReader.close();
+//        } catch (FileNotFoundException e) {
+//            System.out.println("An error occurred.");
+//            e.printStackTrace();
+//        }
+//
+//        return convertFeedToRecipe(processJsonStringToFeed(data));
+//    }
 
+    public List<Recipe> getRecipesFromTheInternet() {
+        Properties config = null;
         try {
-            File myObj = new File("F:\\recipes.txt");
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                data = myReader.nextLine();
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            config = propertiesLoader.loadProperties("local.properties");
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        assert config != null : "Properties are failed to load!";
 
-        return convertFeedToRecipe(processJsonStringToFeed(data));
+        HttpResponse<String> response = null;
+        try {
+            response = Unirest.get(config.getProperty("yummly2Url"))
+                    .header("x-rapidapi-host", config.getProperty("x-rapidapi-host"))
+                    .header("x-rapidapi-key", config.getProperty("x-rapidapi-key"))
+                    .asString();
+        } catch (UnirestException e) {
+            log.error("UnirestException: Fail to get json string from the internet!");
+        }
+
+        assert response != null : "HttpResponse was null!";
+        return convertFeedToRecipe(processJsonStringToFeed(response.getBody()));
     }
 
     public Feed processJsonStringToFeed(String jsonString) {

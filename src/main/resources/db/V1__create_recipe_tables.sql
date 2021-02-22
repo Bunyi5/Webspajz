@@ -4,7 +4,7 @@ CREATE TABLE recipe (
     id INT PRIMARY KEY,
     yum_id VARCHAR(250),
     name VARCHAR(250),
-    description VARCHAR(1000),
+    description VARCHAR,
     number_of_servings INT,
     icon_image_url VARCHAR(250),
     resizable_image_url VARCHAR(250),
@@ -25,7 +25,7 @@ CREATE TABLE recipe_technique_list (
 
 CREATE TABLE recipe_preparation_steps (
     recipe_id INT,
-    preparation_steps VARCHAR(1000)
+    preparation_steps VARCHAR
 );
 
 CREATE TABLE recipe_ingredient (

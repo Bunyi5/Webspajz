@@ -20,7 +20,7 @@ public class DatabaseRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        List<Recipe> recipes = recipeService.getRecipesFromFile();
+        List<Recipe> recipes = recipeService.getRecipesFromTheInternet();
         recipeRepository.saveAll(recipes);
         log.info("All recipes saved into the database.");
     }
