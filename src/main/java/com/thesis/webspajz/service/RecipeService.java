@@ -22,6 +22,7 @@ import com.thesis.webspajz.repository.RecipeIngredientRepository;
 import com.thesis.webspajz.repository.RecipeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -41,6 +42,7 @@ public class RecipeService {
     private final RecipeIngredientRepository recipeIngredientRepository;
     private final CompletenessCalculator completenessCalculator;
     private final PropertiesLoader propertiesLoader;
+    private final BasicTextEncryptor apiDecoder;
 
     public List<PresentedRecipeDTO> getAllPresentedRecipe() {
         return completenessCalculator.fillCalculationInPresentedRecipeDTO(recipeRepository.findAllPresentedRecipe());
@@ -59,11 +61,15 @@ public class RecipeService {
         }
         assert config != null : "Properties are failed to load!";
 
+        String yummly2Url = apiDecoder.decrypt(config.getProperty("yummly2Url"));
+        String xRapidApiHost = apiDecoder.decrypt(config.getProperty("x-rapidapi-host"));
+        String xRapidApiKey = apiDecoder.decrypt(config.getProperty("x-rapidapi-key"));
+
         HttpResponse<String> response = null;
         try {
-            response = Unirest.get(config.getProperty("yummly2Url"))
-                    .header("x-rapidapi-host", config.getProperty("x-rapidapi-host"))
-                    .header("x-rapidapi-key", config.getProperty("x-rapidapi-key"))
+            response = Unirest.get(yummly2Url)
+                    .header("x-rapidapi-host", xRapidApiHost)
+                    .header("x-rapidapi-key", xRapidApiKey)
                     .asString();
         } catch (UnirestException e) {
             log.error("UnirestException: Fail to get json string from the internet!");
