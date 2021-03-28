@@ -27,6 +27,7 @@ public class CompletenessCalculator {
                 recipeDTO.setCompleteness(calculateCompleteness(recipeDTO.getId(), unitQuantityList))
         );
 
+        presentedRecipeDTOList.sort(new PresentedRecipeComparator());
         return presentedRecipeDTOList;
     }
 

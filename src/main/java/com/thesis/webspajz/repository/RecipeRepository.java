@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
-    @Query("SELECT new com.thesis.webspajz.dto.PresentedRecipeDTO(r.id, r.name, r.iconImageUrl) FROM Recipe r")
+    @Query("SELECT new com.thesis.webspajz.dto.PresentedRecipeDTO(r.id, r.name, r.iconImageUrl) FROM Recipe r ORDER BY r.name")
     List<PresentedRecipeDTO> findAllPresentedRecipe();
 
     Optional<Recipe> findByYumId(String yumId);
